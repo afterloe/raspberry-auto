@@ -1,33 +1,65 @@
-#include <stdio.h>
 #include <opencv2/opencv.hpp>
+#include <opencv2/videoio.hpp>
+#include <iostream>
 
 using namespace cv;
 
-#define DEVICE_ID 0
-#define API_ID cv::CAP_ANY
+namespace vp {
+	void guide(char **);
+	int process(VideoCapture&);
+}
 
 int main(int argc, char** argv) {
-
-
-	Mat frame;
-	VideoCapture cap;
-
-	cap.open(DEVICE_ID + API_ID);
-	if(false == cap.isOpened()) {
-		std::cerr << "can't open vidoe." << std::endl;
+	vp::guide(argv);
+	VideoCapture cap(0);
+	if (false == cap.isOpened()) {
+		cap.open(0);
+	}
+	if (false == cap.isOpened()) {
+		std::cerr << "打开设备失败" << std::endl;
 		return -1;
 	}
+	return vp::process(cap);
+}
 
-	std::cout << "Strt grabbing." << std::endl;
-	for ( ; ; ) {
-		auto flag = cap.read(frame);
-		if (false == flag) {
-			std::cerr << "ERROR! blank frame grabbed" << std::endl;
-			break;
+void vp::guide(char **argv) {
+
+	std::cout << "调取摄像头播放实时视频" << std::endl
+		<< "使用方式: \n" << argv[0] << "<video file>"
+		<< std::endl;
+}
+
+int vp::process(VideoCapture& capture) {
+
+	auto windows_name = "Live...";
+	std::cout << "按下esc 或 q 退出程序" << std::endl;
+	Mat frame;
+
+	try {
+		for ( ; ; ) {
+			capture >> frame;
+			if ( frame.empty() ) {
+				std::cout << "未连接到设备" << std::endl;
+				return -1;
+			}
+			imshow(windows_name, frame);
+			char key = (char) waitKey(1);
+			switch (key) {
+				case 'q':
+				case 'Q':
+				case 27:
+					return 0;
+				default:
+					break;
+			}
 		}
-		imshow("Live", frame);
-		waitKey(1);
+	} catch(std::exception& e) {
+		std::cout << "连接异常" << std::endl;
+		std::cout << e.what() << std::endl;
 	}
-
+	
+	capture.release();
+	frame.release();
+	
 	return 0;
 }
