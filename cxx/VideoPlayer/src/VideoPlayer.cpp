@@ -45,6 +45,19 @@ int vp::process(VideoCapture& capture) {
 	Mat frame;
 
 	try {
+		auto rate = capture.get(cv::CAP_PROP_FPS);
+
+		// 该项为播放时平时使用
+		std::cout << "帧率为: " << rate 
+			<< std::endl
+			<< "总帧数为: " << capture.get(cv::CAP_PROP_FRAME_COUNT)
+			<< std::endl;
+
+		auto position = 0.0;
+		capture.set(cv::CAP_PROP_POS_FRAMES, position);
+		auto delay = 1000/rate;
+		// 设置视频解吗为 mjpg 解决树莓派 视频播放卡顿的问题
+		capture.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M','J','P','G'));
 		for ( ; ; ) {
 			capture >> frame;
 			if ( frame.empty() ) {
@@ -52,7 +65,7 @@ int vp::process(VideoCapture& capture) {
 				return -1;
 			}
 			imshow(windows_name, frame);
-			char key = (char) waitKey(1);
+			char key = (char) waitKey(delay);
 			switch (key) {
 				case 'q':
 				case 'Q':

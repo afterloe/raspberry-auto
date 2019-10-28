@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named VideoPlayer
+# Target rules for targets named VideoPlayer.out
 
 # Build rule for target.
-VideoPlayer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 VideoPlayer
-.PHONY : VideoPlayer
+VideoPlayer.out: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 VideoPlayer.out
+.PHONY : VideoPlayer.out
 
 # fast build rule for target.
-VideoPlayer/fast:
-	$(MAKE) -f CMakeFiles/VideoPlayer.dir/build.make CMakeFiles/VideoPlayer.dir/build
-.PHONY : VideoPlayer/fast
+VideoPlayer.out/fast:
+	$(MAKE) -f CMakeFiles/VideoPlayer.out.dir/build.make CMakeFiles/VideoPlayer.out.dir/build
+.PHONY : VideoPlayer.out/fast
 
 src/VideoPlayer.o: src/VideoPlayer.cpp.o
 
@@ -129,7 +129,7 @@ src/VideoPlayer.o: src/VideoPlayer.cpp.o
 
 # target to build an object file
 src/VideoPlayer.cpp.o:
-	$(MAKE) -f CMakeFiles/VideoPlayer.dir/build.make CMakeFiles/VideoPlayer.dir/src/VideoPlayer.cpp.o
+	$(MAKE) -f CMakeFiles/VideoPlayer.out.dir/build.make CMakeFiles/VideoPlayer.out.dir/src/VideoPlayer.cpp.o
 .PHONY : src/VideoPlayer.cpp.o
 
 src/VideoPlayer.i: src/VideoPlayer.cpp.i
@@ -138,7 +138,7 @@ src/VideoPlayer.i: src/VideoPlayer.cpp.i
 
 # target to preprocess a source file
 src/VideoPlayer.cpp.i:
-	$(MAKE) -f CMakeFiles/VideoPlayer.dir/build.make CMakeFiles/VideoPlayer.dir/src/VideoPlayer.cpp.i
+	$(MAKE) -f CMakeFiles/VideoPlayer.out.dir/build.make CMakeFiles/VideoPlayer.out.dir/src/VideoPlayer.cpp.i
 .PHONY : src/VideoPlayer.cpp.i
 
 src/VideoPlayer.s: src/VideoPlayer.cpp.s
@@ -147,7 +147,7 @@ src/VideoPlayer.s: src/VideoPlayer.cpp.s
 
 # target to generate assembly for a file
 src/VideoPlayer.cpp.s:
-	$(MAKE) -f CMakeFiles/VideoPlayer.dir/build.make CMakeFiles/VideoPlayer.dir/src/VideoPlayer.cpp.s
+	$(MAKE) -f CMakeFiles/VideoPlayer.out.dir/build.make CMakeFiles/VideoPlayer.out.dir/src/VideoPlayer.cpp.s
 .PHONY : src/VideoPlayer.cpp.s
 
 # Help Target
@@ -157,7 +157,7 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... VideoPlayer"
+	@echo "... VideoPlayer.out"
 	@echo "... edit_cache"
 	@echo "... src/VideoPlayer.o"
 	@echo "... src/VideoPlayer.i"
