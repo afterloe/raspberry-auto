@@ -10,8 +10,17 @@ namespace vp {
 }
 
 int main(int argc, char** argv) {
-	vp::guide(argv);
-	VideoCapture cap(0);
+    cv::CommandLineParser parser(argc, argv, "{help h||}{@input||}");
+    if (parser.has("help")) {
+        vp::guide(argv);
+        return 0;
+    }
+    std::string arg = parser.get<std::string>("@input");
+    if (arg.empty()) {
+        vp::guide(argv);
+        return -1;
+    }
+	VideoCapture cap(arg);
 	if (false == cap.isOpened()) {
 		cap.open(0);
 	}
