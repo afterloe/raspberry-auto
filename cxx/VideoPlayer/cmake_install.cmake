@@ -1,4 +1,4 @@
-# Install script for directory: /home/pi/Project/LearnOpencv/cxx/VideoPlayer
+# Install script for directory: /home/afterloe/Project/LearnOpencv/cxx/VideoPlayer
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/pi/Project/LearnOpencv/cxx/VideoPlayer/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/afterloe/Project/LearnOpencv/cxx/VideoPlayer/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
