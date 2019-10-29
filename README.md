@@ -10,7 +10,7 @@
 - 前言：[opencv安装](./doc/install.md)
 - 任务1：读取图片并展示
     - [Python](./py/readImage.py)
-    - C++ 
+    - [C++](./cxx/ImageShow/summary.md) 
 - 任务2：读取视频并播放
     - [Python](./py/videoPlay.py)
     - [C++](./cxx/VideoPlayer/summary.md)

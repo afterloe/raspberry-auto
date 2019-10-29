@@ -37,6 +37,7 @@ int that::showImage(const std::string& src) {
     }
     imshow(WINDOWS_NAME, img);
     waitKey(0);
+    destroyAllWindows();
     return 0;
 }
 
