@@ -16,9 +16,16 @@ baidu了很久也没有找到合适的答案，后来发现python版本的代码
 的尝试，发现添加`capture.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M','J','P','G'));`后，卡顿
 就消失了，变的十分流畅
 
-## 源码
+## 资料
+### 结构
+```
+VideoPlayer
+ - src
+ ---- VideoPlayer.cpp
+ - CMakeLists.txt
+```
 
-以下是源代码
+### 源代码
 ```
 #include <opencv2/opencv.hpp>
 #include <opencv2/videoio.hpp>
