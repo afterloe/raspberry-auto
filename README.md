@@ -14,3 +14,6 @@
 - 任务2：读取视频并播放
     - [Python](./py/videoPlay.py)
     - [C++](./cxx/VideoPlayer/summary.md)
+- 任务3：画图
+    - [Python](./py/drawOperation.py)
+    - [c++](./cxx/DrawOperation/summary.md)
