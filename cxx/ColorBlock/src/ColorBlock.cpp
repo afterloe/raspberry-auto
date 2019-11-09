@@ -11,8 +11,11 @@ namespace that {
 int main(int arc, char** argv) {
     std::cout << "创建图片与颜色块"
         << std::endl;
-    Mat image = Mat::ones(240, 320, cv::CV_8U) * 3; // make 240 * 320 matrix filled with 3.
-    
+    // 创建一个 240宽 320高的 白底图片
+    Mat image = Mat::ones(240, 320, CV_8UC1) * 255; 
+
+
+
     imshow("image", image);
     cv::waitKey(0);
 
