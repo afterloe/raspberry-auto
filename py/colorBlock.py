@@ -13,8 +13,8 @@ import numpy as np
 # 创建图片和颜色块
 img = np.ones((240, 320, 3), dtype=np.uint8) * 255
 img[100:140, 140:180] = [0,0,255]
-img[60:100, 60,100] = [0,255,255]
-img[60,100, 220:260] = [255,0,0]
+img[60:100, 60:100] = [0,255,255]
+img[60:100, 220:260] = [255,0,0]
 img[140:180, 60:100] = [255,0,0]
 img[140:180, 220:260] = [0,255,255]
 
@@ -29,12 +29,13 @@ hsv=cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
 # 遮罩
 mask_yellow=cv2.inRange(hsv, yello_lower, yello_upper)
-mask_rea=cv2.inRange(hsv, red_lower, red_upper)
-mask=cv2.bitwise_and(img, img, mask=mask)
+mask_red=cv2.inRange(hsv, red_lower, red_upper)
+mask=cv2.bitwise_or(mask_yellow, mask_red)
+res=cv2.bitwise_and(img, img, mask=mask)
 
 cv2.imshow('imgage', img)
 cv2.imshow('mask', mask)
 cv2.imshow('res', res)
 
 cv2.waitKey(0)
-cv2.destoryAllWindows()
+cv2.destroyAllWindows()
