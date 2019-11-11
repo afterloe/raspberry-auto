@@ -10,8 +10,8 @@
 import cv2
 import numpy as np
 
-yellow_lower=np.array([9,135,231])
-yellow_upper=np.array([31,255,255])
+yellow_lower=np.array([35,43,46])
+yellow_upper=np.array([77,255,255])
 
 cap=cv2.VideoCapture(0) # 读取视频
 cap.set(3, 320)
@@ -39,7 +39,7 @@ while 1:
     cv2.imshow('frame', frame)
     cv2.imshow('mask', mask)
     cv2.imshow('res', res)
-    if cv2.waitKey(5)&0xFF == 27:
+    if cv2.waitKey(5)&0xFF == 27: # esc 退出
         break
 
 cap.release()
