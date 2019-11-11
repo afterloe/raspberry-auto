@@ -26,6 +26,8 @@ int main(int argc, char ** argv) {
 	that::writeWord(image, word);
 	imshow(WINDOWS_NAME, image);
 	waitKey(0);
+
+    return 0;
 }
 
 void that::drawRect(const Mat& image) {
