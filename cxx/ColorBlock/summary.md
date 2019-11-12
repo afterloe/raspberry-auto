@@ -3,6 +3,8 @@
 > MIT License  
 > version 1.0  
 
+源码看[这里](src/ColorBlock.cpp)
+
 ## 注意事项
 ### 颜色的问题
 opencv 中的颜色是 BGR 不是 RGB，色值相反
@@ -10,7 +12,7 @@ opencv 中的颜色是 BGR 不是 RGB，色值相反
 ### HSV颜色空间转换
 Opencv中常用的颜色转换为两种，BGR -> Gray, BGR -> HSV；其中Gray与HSV不可以相互转换，HSV颜色空间的取值范围
 ```
-H [0, 179]
+H [0, 180]
 S [0, 255]
 V [0, 255]
 ```
