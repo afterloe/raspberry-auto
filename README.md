@@ -16,4 +16,7 @@
     - [C++](./cxx/VideoPlayer/summary.md)
 - 任务3：画图
     - [Python](./py/drawOperation.py)
-    - [c++](./cxx/DrawOperation/summary.md)
+    - [C++](./cxx/DrawOperation/summary.md)
+- 任务4: 图像颜色识别
+    - [Python](./py/colorBlock.py)
+    - [C++](./cxx/ColorBlock/summary.md)
