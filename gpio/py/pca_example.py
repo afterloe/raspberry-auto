@@ -27,8 +27,8 @@ def set_servo_angle(channel, angle):
 
 pwm.set_pwm_freq(50)
 
-set_servo_angle(1, 20)
-set_servo_angle(0, 140)
+set_servo_angle(1, 100)
+set_servo_angle(0, 30)
 time.sleep(0.8)
 
 print("moving servo on channel 0, press ctrl-c to quit...")
