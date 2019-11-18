@@ -64,6 +64,7 @@ int vp::process(VideoCapture& capture) {
 				std::cout << "未连接到设备" << std::endl;
 				return -1;
 			}
+            cv::namedWindow(windows_name, cv::WND_PROP_FULLSCREEN);
             cv::resizeWindow(windows_name, 960, 480);
             cv::imshow(windows_name, frame);
 			char key = (char) waitKey(delay);
@@ -83,6 +84,7 @@ int vp::process(VideoCapture& capture) {
 	
 	capture.release();
 	frame.release();
+    cv::destroyAllWindows();
 	
 	return 0;
 }
