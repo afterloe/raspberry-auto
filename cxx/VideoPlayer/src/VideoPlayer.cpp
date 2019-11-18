@@ -58,16 +58,16 @@ int vp::process(VideoCapture& capture) {
 		auto delay = 1000/rate;
 		// 设置视频解吗为 mjpg 解决树莓派 视频播放卡顿的问题
 		capture.set(cv::CAP_PROP_FOURCC, cv::VideoWriter::fourcc('M','J','P','G'));
+        cv::namedWindow(windows_name, cv::WND_PROP_FULLSCREEN);
+        cv::resizeWindow(windows_name, 960, 480);
 		for ( ; ; ) {
 			capture >> frame;
 			if ( frame.empty() ) {
 				std::cout << "未连接到设备" << std::endl;
 				return -1;
 			}
-            cv::namedWindow(windows_name, cv::WND_PROP_FULLSCREEN);
-            cv::resizeWindow(windows_name, 960, 480);
+			char key = (char) waitKey(1);
             cv::imshow(windows_name, frame);
-			char key = (char) waitKey(delay);
 			switch (key) {
 				case 'q':
 				case 'Q':
