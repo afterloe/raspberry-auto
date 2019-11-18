@@ -64,8 +64,7 @@ int vp::process(VideoCapture& capture) {
 				std::cout << "未连接到设备" << std::endl;
 				return -1;
 			}
-            cv::resizeWindow(windows_name, 960, 480);
-            cv::imshow(windows_name, frame);
+			imshow(windows_name, frame);
 			char key = (char) waitKey(delay);
 			switch (key) {
 				case 'q':
