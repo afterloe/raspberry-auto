@@ -16,7 +16,7 @@ pwm.set_pwm(2, 0, 240)
 time.sleep(1)
 
 cap = cv2.VideoCapture(0)
-hsv_min = np.array([35,43,46])
+hsv_min = np.array([45,43,46])
 hsv_max = np.array([77,255,255])
 
 x = 0
@@ -32,7 +32,7 @@ y = 0
 
 def xx(X_P, Y_P):
     pwm.set_pwm(1, 0, 650 - X_P)
-    pwm.set_pwm(2, 0, 650 - Y_P)
+    pwm.set_pwm(0, 0, 650 - Y_P)
 
 while 1:
     ret, frame = cap.read()
