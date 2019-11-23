@@ -20,3 +20,6 @@
 - 任务4: 图像颜色识别
     - [Python](./py/colorBlock.py)
     - [C++](./cxx/ColorBlock/summary.md)
+- 任务5：人脸识别
+    - [Python](./py)
+    - [C++](./cxx/FaceCatch/summary.md)
