@@ -11,8 +11,8 @@ import threading
 
 pwm = Adafruit_PCA9685.PCA9685()
 pwm.set_pwm_freq(60)
-pwm.set_pwm(1, 0, 320)
-pwm.set_pwm(2, 0, 240)
+pwm.set_pwm(14, 0, 580)
+pwm.set_pwm(15, 0, 580)
 time.sleep(1)
 
 cap = cv2.VideoCapture(0)
@@ -31,8 +31,8 @@ flag = 0
 y = 0
 
 def xx(X_P, Y_P):
-    pwm.set_pwm(1, 0, 650 - X_P)
-    pwm.set_pwm(0, 0, 650 - Y_P)
+    pwm.set_pwm(14, 0, 650 - X_P)
+    pwm.set_pwm(15, 0, 650 - Y_P)
 
 while 1:
     ret, frame = cap.read()
@@ -78,7 +78,7 @@ while 1:
     tid.setDaemon(True)
     tid.start()
 
-    cv2.imshow("live...", frame)
+#    cv2.imshow("live...", frame)
     if 119 == cv2.waitKey(5):
         break
 
