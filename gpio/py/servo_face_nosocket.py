@@ -11,8 +11,8 @@ import threading
 
 pwm = Adafruit_PCA9685.PCA9685()
 pwm.set_pwm_freq(60)
-pwm.set_pwm(0, 0, 320)
-pwm.set_pwm(1, 0, 240)
+#pwm.set_pwm(0, 0, 320)
+#pwm.set_pwm(1, 0, 240)
 time.sleep(1)
 
 cap = cv2.VideoCapture(0)
@@ -31,8 +31,8 @@ y = 0
 faceBool = False
 
 def moveSteeringEngine(x, y):
-    pwm.set_pwm(0, 0, 650 - x)
-    pwm.set_pwm(1, 0, 650 - y)
+    pwm.set_pwm(14, 0, 650 - x)
+    pwm.set_pwm(15, 0, 650 - y)
 
 while True:
     ret, frame = cap.read()
