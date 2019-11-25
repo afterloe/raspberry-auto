@@ -39,7 +39,7 @@ while True:
     if None is frame:
         break
 
-    frame = imutils.resize(frame, width=500)
+    frame = imutils.resize(frame, width=720)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # Ksize(width, height) 必须为大于零的 奇数， width 与 height可以不同
     gray = cv2.GaussianBlur(gray, (21, 21), 0)
@@ -71,8 +71,8 @@ while True:
     cv2.putText(frame, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
     cv2.imshow("Security Feed", frame)
-    cv2.imshow("Thresh", thresh)
-    cv2.imshow("Frame Delta", frameDelta)
+    #cv2.imshow("Thresh", thresh)
+    #cv2.imshow("Frame Delta", frameDelta)
     key = cv2.waitKey(1) & 0xFF
     if ord("q") == key:
         break

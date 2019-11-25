@@ -2,11 +2,18 @@
 # coding=utf-8
 
 from __future__ import division
+import argparse
 import Adafruit_PCA9685
-import sys
 
 pwm = Adafruit_PCA9685.PCA9685()
 
-input_angle = int(sys.argv[1])
-angle = 4096 * ((input_angle * 11) + 500) / 20000
-pwm.set_pwm(15, 0, int(angle))
+ap = argparse.ArgumentParser()
+ap.add_argument("-c", "-channel", type=int, help="GPIO channel")
+ap.add_argument("-a", "-angle", type=int, help="for enginer angle")
+args = vars(ap.parse_args())
+
+if None == args["c"] or None == args["a"]:
+    print("please input channel and angle!")
+    exit(-1)
+
+pwm.set_pwm(args["c"], 0, args["a"])
