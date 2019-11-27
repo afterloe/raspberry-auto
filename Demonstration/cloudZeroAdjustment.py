@@ -7,6 +7,7 @@ import time
 import Adafruit_PCA9685
 
 pwm = Adafruit_PCA9685.PCA9685()
+pwm.set_pwm_freq(60)
 
 speech(4, "云台即将进行调零操作， 水平方向")
 time.sleep(1)
