@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
 
     Mat img = imread(img_file, cv::IMREAD_COLOR);
     if (nullptr == img.data) {
-        std::cout << "Error loading image " << img_file
+        std::cout << "Error to load info from " << img_file
         << std::endl;
         return -1;
     }
