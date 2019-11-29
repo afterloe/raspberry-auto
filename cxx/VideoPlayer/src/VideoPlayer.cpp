@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 		std::cerr << "打开设备失败" << std::endl;
 		return -1;
 	}
-	return vp::process(cap);
+	return vp::process(cap)
 }
 
 void vp::guide(char **argv) {
