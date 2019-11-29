@@ -2,16 +2,13 @@
 // Created by afterloe liu on 2019/11/29.
 //
 
-#include <iostream>
 #include <string>
-#include <sstream>
 #include <cmath>
 using namespace std;
 
 #include <opencv2/core/utility.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
-#include <altivec.h>
 using namespace cv;
 
 cv::Mat image;
@@ -25,7 +22,7 @@ namespace that {
 
 const char* key = {
         "{help h usage ? | | print this message}"
-        "@image | | Image to process"
+        "{@image | | Image to process}"
 };
 
 int main(int argc, char** argv) {
@@ -37,7 +34,7 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    std::string imgFile = parser.get<std::string>(0);
+    std::string imgFile = parser.get<std::string>("@image");
 
     if(!parser.check()) {
         parser.printErrors();
@@ -46,10 +43,10 @@ int main(int argc, char** argv) {
 
     image = cv::imread(imgFile, cv::IMREAD_COLOR);
     cv::namedWindow("input pic");
-    cv::createButton("Show histogram", that::showHistoCallback, NULL, QT_PUSH_BUTTON, 0);
-    cv::createButton("Equalize histogram", that::equalizeCallback, NULL, QT_PUSH_BUTTON, 0);
-    cv::createButton("Lomography effect", that::lomoCallback, NULL, QT_PUSH_BUTTON, 0);
-    cv::createButton("Cartonize effect", that::cartoonCallback, NULL, QT_PUSH_BUTTON, 0);
+    createButton("Show histogram", that::showHistoCallback, NULL, QT_PUSH_BUTTON, 0);
+    createButton("Equalize histogram", that::equalizeCallback, NULL, QT_PUSH_BUTTON, 0);
+    createButton("Lomography effect", that::lomoCallback, NULL, QT_PUSH_BUTTON, 0);
+    createButton("Cartonize effect", that::cartoonCallback, NULL, QT_PUSH_BUTTON, 0);
 
     cv::imshow("input pic", image);
 
@@ -124,7 +121,7 @@ void that::lomoCallback(int, void *) {
     }
 
     std::vector<cv::Mat> bgr;
-    split(img, bgr);
+    split(image, bgr);
     LUT(bgr[2], lut, bgr[2]);
     cv::merge(bgr, result);
     cv::Mat halo(image.rows, image.cols, CV_32FC3, Scalar(0.3, 0.3, 0.3));
