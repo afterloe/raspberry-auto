@@ -8,6 +8,7 @@ import Adafruit_PCA9685
 import time
 import numpy as np
 import threading
+import math
 
 pwm = Adafruit_PCA9685.PCA9685()
 pwm.set_pwm_freq(60)
@@ -15,11 +16,50 @@ pwm.set_pwm_freq(60)
 cap = cv2.VideoCapture(0)
 hsv_min = np.array([45,43,46])
 hsv_max = np.array([77,255,255])
-zeroWidth = cap.get(cv2.CAP_PROP_FRAME_WIDTH) / 2  # 640
-zeroHeight = cap.get(cv2.CAP_PROP_FRAME_HEIGHT) / 2  # 480
-x_p = 250
-y_p = 390
-flag = 1
+zero_width = cap.get(cv2.CAP_PROP_FRAME_WIDTH) / 2  # 640 / 2 
+zero_hight = cap.get(cv2.CAP_PROP_FRAME_HEIGHT) / 2  # 480 / 2
+
+
+
+class Point(object):
+    def __init__(self, x, y, step):
+        self.__x = x
+        self.__y = y
+        self.__step = step
+
+    def xAdd(self, step=None):
+        if None is not step:
+            self.__x += step
+        else:
+            self.__x += self.__step
+    
+    def yAdd(self, step=None):
+        if None is not step:
+            self.__y += step
+        else:
+            self.__y += self.__step
+
+    def xSub(self, step=None):
+        if None is not step:
+            self.__x -= step
+        else:
+            self.__x -= self.__step
+
+    def ySub(self, step=None):
+        if None is not step:
+            self.__y -= step
+        else:
+            self.__y -= self.__step
+
+    def getAddr(self):
+        return self.__x, self.__y
+
+
+def calculationLogic(x, y):
+    a = math.pow((x - zero_width), 2)
+    b = math.pow((y - zero_hight), 2)
+    return math.sqrt(a + b)
+
 
 def driveReverse():
     pwm.set_pwm(12, 0, 550)
@@ -75,50 +115,49 @@ def findTarget(frame):
     mask = cv2.GaussianBlur(mask, (3, 3), 0)
     res = cv2.bitwise_and(frame ,frame, mask = mask)
     cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
-    return False, cnts if 0 > len(cnts) else True, cnts
+    if 0 >= len(cnts):
+        return False, cnts
+    else:
+        return True, cnts
 
 
-def targetTracking(cnts, frame=None):
+def targetTracking(cnts, p, frame=None):
     cnt = max(cnts, key=cv2.contourArea)
     (x, y), radius = cv2.minEnclosingCircle(cnt)
     x, y, radius = int(x), int(y), int(radius)
     if None is not frame:
         cv2.rectangle(frame, (x - radius, y - radius), (x + radius, y + radius),
                       (0, 255, 0), 2)
+    if calculationLogic(x, y) < 50:
+        return
+    if x > zero_width:
+        print("右")
+        p.xSub()
+    else:
+        print("左")
+        p.xAdd()
 
+    if y > zero_hight:
+        print("下")
+        p.ySub()
+    else:
+        print("上")
+        p.yAdd()
+    print("move to %d, %d" % (p.getAddr()))
+    tid = threading.Thread(target = moveSteering, args = (p.getAddr()))
+    tid.setDaemon(True)
+    tid.start()
+
+p = Point(250, 390, 1)
 
 while True:
     ret, frame = cap.read()
     if False == ret:
         print("read image from video failed!")
         break;
-
-        cnt = max(cnts, key = cv2.contourArea)
-        (x, y), radius = cv2.minEnclosingCircle(cnt)
-        x = int(x)
-        y = int(y)
-        radius = int(radius)
-        cv2.rectangle(frame, (x - radius, y - radius), (x + radius, y + radius), (0, 255, 0), 2)
-
-        if x - radius > videoWidth / 2:
-            print("右")
-            x_p -= flag
-        else:
-            print("左")
-            x_p += flag
-
-        if y - radius > videoHeight / 2:
-            print("下")
-            y_p -= flag
-        else:
-            print("上")
-            y_p += flag
-
-        print("x:%d, y:%d" % (x_p, y_p))
-        tid = threading.Thread(target = moveSteering, args = (x_p, y_p))
-        tid.setDaemon(True)
-        tid.start()
-
+    find, cnts = findTarget(frame)
+    if find:
+        targetTracking(cnts, p, frame)
     cv2.imshow("cat rog", frame)
     if 119 == cv2.waitKey(5):  # pass w
         break
