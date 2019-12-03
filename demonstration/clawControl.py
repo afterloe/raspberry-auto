@@ -8,8 +8,11 @@ import Adafruit_PCA9685
 pwm = Adafruit_PCA9685.PCA9685()
 pwm.set_pwm_freq(60)
 
-pwm.set_pwm(2, 0, 300)
-time.sleep(2)
-pwm.set_pwm(2, 0, 490)
-time.sleep(2)
-pwm.set_pwm(2, 0, 340)
+i = 0
+while i < 5:
+    i += 1
+    pwm.set_pwm(11, 0, 370)
+    time.sleep(1)
+    pwm.set_pwm(11, 0, 480)
+    time.sleep(1)
+    pwm.set_pwm(11, 0, 400)
