@@ -14,7 +14,7 @@ pwm = Adafruit_PCA9685.PCA9685()
 pwm.set_pwm_freq(60)
 
 cap = cv2.VideoCapture(0)
-hsv_min = np.array([45,43,46])
+hsv_min = np.array([45,83,86])
 hsv_max = np.array([77,255,255])
 zero_width = cap.get(cv2.CAP_PROP_FRAME_WIDTH) / 2  # 640 / 2 
 zero_hight = cap.get(cv2.CAP_PROP_FRAME_HEIGHT) / 2  # 480 / 2
@@ -86,13 +86,6 @@ def driveRight():
     pwm.set_pwm(14, 0, 350)
 
 
-def initEquipment():
-    pwm.set_pwm(0, 0, x_p)
-    pwm.set_pwm(1, 0, y_p)
-    pwm.set_pwm(12, 0, 350)
-    pwm.set_pwm(14, 0, 350)
-
-
 def moveSteering(X_P, Y_P):
     if 600 < X_P:
         X_P = 600
@@ -124,6 +117,8 @@ def findTarget(frame):
 def targetTracking(cnts, p, frame=None):
     cnt = max(cnts, key=cv2.contourArea)
     (x, y), radius = cv2.minEnclosingCircle(cnt)
+    if 10 > radius:
+        return 
     x, y, radius = int(x), int(y), int(radius)
     if None is not frame:
         cv2.rectangle(frame, (x - radius, y - radius), (x + radius, y + radius),
@@ -149,6 +144,8 @@ def targetTracking(cnts, p, frame=None):
     tid.start()
 
 p = Point(250, 390, 1)
+x, y = p.getAddr()
+moveSteering(x, y)
 
 while True:
     ret, frame = cap.read()
