@@ -6,17 +6,19 @@ create by afterloe<liumin@ascs.tech>
 version is 1.4
 """
 
-import cv2
+import cv2 as cv
 
-cap = cv2.VideoCapture(0)
+
+cap = cv.VideoCapture(0)
+cv.namedWindow("frame", cv.WINDOW_AUTOSIZE)
 while cap.isOpened():
     ret, frame = cap.read()
     if ret:
-        cv2.imshow('frame',frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        cv.imshow('frame',frame)
+        if cv.waitKey(1) & 0xFF == ord('q'):
             break
     else:
         break
 
 cap.release()
-cv2.destroyAllWindows()
+cv.destroyAllWindows()
