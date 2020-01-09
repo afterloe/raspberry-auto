@@ -3,6 +3,9 @@ Makefile
 VideoPlayer.out
 cmake_install.cmake
 
+# mac os file
+.DS_Store
+
 # node addons file
 *.node
 node_modules/
