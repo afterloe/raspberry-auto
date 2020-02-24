@@ -30,9 +30,9 @@ def main():
         out_names = dnn.getUnconnectedOutLayersNames()
         dnn.setInput(data)
         outs = dnn.forward(out_names)
-        t, _ = dnn.getPerfProfile()
-        txt = "Inference time: %.2f ms" % (t * 1000.0 / cv.getTickFrequency())
-        cv.putText(frame, txt, (0, 15), cv.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+        # t, _ = dnn.getPerfProfile()
+        # txt = "Inference time: %.2f ms" % (t * 1000.0 / cv.getTickFrequency())
+        # cv.putText(frame, txt, (0, 15), cv.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
         confidences = []
         boxes = []
@@ -59,10 +59,9 @@ def main():
             left, top, width, height = box[:4]
             cv.rectangle(frame, (left, top), (left + width, top + height), (0, 0, 255), 2, cv.LINE_AA)
             cv.putText(frame, "target", (left, top), cv.FONT_HERSHEY_SIMPLEX, 1.0, (255, 255, 0), 2)
-            print("------------------------------------")
 
         cv.imshow("yolov3 demo", frame)
-        key = cv.waitKey(30)
+        key = cv.waitKey(100)
         if 27 == key:
             print("enter esc")
             break
