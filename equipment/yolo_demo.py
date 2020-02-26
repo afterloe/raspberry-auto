@@ -19,6 +19,9 @@ def main():
     dnn = cv.dnn.readNetFromDarknet(config, bin_model)
     dnn.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
     dnn.setPreferableTarget(cv.dnn.DNN_TARGET_CPU)
+    cv.namedWindow("living", cv.WINDOW_AUTOSIZE)
+    cv.resizeWindow("living", 600, 300)
+    cv.resizeWindow("yolov3 demo", 600, 300)
 
     while True:
         ret, frame = capture.read()
