@@ -11,17 +11,18 @@ import numpy as np
 
 model_bin = "../../models/east_net/frozen_east_text_detection.pb"
 layer_names = ["feature_fusion/Conv_7/Sigmoid", "feature_fusion/concat_3"]
+padding = 5
 
 
 def main():
     dnn = cv.dnn.readNet(model_bin)
-    dnn.setPreferableBackend(cv.dnn.DNN_BACKEND_CUDA)
-    dnn.setPreferableTarget(cv.dnn.DNN_TARGET_CUDA)
+    # dnn.setPreferableBackend(cv.dnn.DNN_BACKEND_HALIDE)
+    # dnn.setPreferableTarget(cv.dnn.DNN_TARGET_FPGA)
     image = cv.imread("./target.jpeg")
     cv.imshow("src", image)
-    (H, W) = image.shape[:2]
-    rH = H / float(320)
-    rW = W / float(320)
+    (h, w) = image.shape[:2]
+    r_h = h / float(320)
+    r_w = w / float(320)
     data = cv.dnn.blobFromImage(image, 1.0, (320, 320), (123.68, 116.78, 103.94), True, False)
     start = time.time()
     dnn.setInput(data)
@@ -53,18 +54,50 @@ def main():
             start_y = int(end_y - h)
             rects.append([start_x, start_y, end_x, end_y])
             confidences.append(float(scores_data[x]))
-
     boxes = cv.dnn.NMSBoxes(rects, confidences, 0.5, 0.8)
-
+    result = np.zeros(image.shape[:2], dtype=image.dtype)
     for i in boxes:
         i = i[0]
         start_x, start_y, end_x, end_y = rects[i]
-        start_x = int(start_x * rW)
-        start_y = int(start_y * rH)
-        end_x = int(end_x * rW)
-        end_y = int(end_y * rH)
-        cv.rectangle(image, (start_x, start_y), (end_x, end_y), (255, 0, 0), 2)
-    cv.imshow("result", image)
+        start_x = int(start_x * r_w)
+        start_y = int(start_y * r_h)
+        end_x = int(end_x * r_w)
+        end_y = int(end_y * r_h)
+        cv.rectangle(result, (start_x, start_y), (end_x, end_y), (255, 0, 0), 2)
+
+    kernel = cv.getStructuringElement(cv.MORPH_RECT, (5, 1))
+    result = cv.morphologyEx(result, cv.MORPH_DILATE, kernel)
+    contours, hierachy = cv.findContours(result, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+    text_boxes = []
+    for index in range(len(contours)):
+        box = cv.boundingRect(contours[index])
+        if box[2] < 10 or box[3] < 10:
+            continue
+        # cv.rectangle(image, (box[0], box[1]), (box[0] + box[2], box[1] + box[3]), (255, 0, 0), 2, cv.LINE_AA)
+        # x, y, w, h
+        text_boxes.append((box[0], box[1], box[0] + box[2], box[1] + box[3]))
+
+    nums = len(text_boxes)
+    for i in range(nums):
+        for j in range(i + 1, nums, 1):
+            y_i = text_boxes[i][1]
+            y_j = text_boxes[j][1]
+            if y_i > y_j:
+                temp = text_boxes[i]
+                text_boxes[i] = text_boxes[j]
+                text_boxes[j] = temp
+    for x, y, w, h in text_boxes:
+        text_area_detect(image[y: h + padding, x: w, :])
+
+    # cv.imshow("finder", image)
+    # cv.imshow("result", result)
+    # cv.waitKey(0)
+
+
+def text_area_detect(roi):
+    gray = cv.cvtColor(roi, cv.COLOR_BGR2GRAY)
+    binary = cv.adaptiveThreshold(gray, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY_INV, 45, 15)
+    cv.imshow("text_roi", gray)
     cv.waitKey(0)
 
 
