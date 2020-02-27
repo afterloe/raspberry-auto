@@ -20,7 +20,6 @@ zero_width = cap.get(cv2.CAP_PROP_FRAME_WIDTH) / 2  # 640 / 2
 zero_hight = cap.get(cv2.CAP_PROP_FRAME_HEIGHT) / 2  # 480 / 2
 
 
-
 class Point(object):
     def __init__(self, x, y, step):
         self.__x = x
@@ -149,7 +148,7 @@ moveSteering(x, y)
 
 while True:
     ret, frame = cap.read()
-    if False == ret:
+    if False is ret:
         print("read image from video failed!")
         break;
     find, cnts = findTarget(frame)

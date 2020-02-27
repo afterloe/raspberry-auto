@@ -2,7 +2,6 @@
 # -*- coding=utf-8 -*-
 
 import cv2 as cv
-import cv2.cuda as gpu
 
 """
 
