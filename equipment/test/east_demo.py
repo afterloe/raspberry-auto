@@ -44,7 +44,7 @@ def main():
             off_set_x, off_set_y = x * 4.0, y * 4.0
             angle = angles_data[x]
             cos = np.cos(angle)
-            sin = np.cos(angle)
+            sin = np.sin(angle)
             h = x_data_0[x] + x_data_2[x]
             w = x_data_1[x] + x_data_3[x]
             end_x = int(off_set_x + (cos * x_data_1[x]) + (sin * x_data_2[x]))
