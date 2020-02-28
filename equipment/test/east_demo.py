@@ -16,8 +16,8 @@ padding = 5
 
 def main():
     dnn = cv.dnn.readNet(model_bin)
-    # dnn.setPreferableBackend(cv.dnn.DNN_BACKEND_HALIDE)
-    # dnn.setPreferableTarget(cv.dnn.DNN_TARGET_FPGA)
+    dnn.setPreferableBackend(cv.dnn.DNN_BACKEND_CUDA)
+    dnn.setPreferableTarget(cv.dnn.DNN_TARGET_CUDA)
     image = cv.imread("./target.jpeg")
     cv.imshow("src", image)
     (h, w) = image.shape[:2]
@@ -87,7 +87,12 @@ def main():
                 text_boxes[i] = text_boxes[j]
                 text_boxes[j] = temp
     for x, y, w, h in text_boxes:
-        text_area_detect(image[y: h + padding, x: w, :])
+        # name = "./{}.jpeg".format(
+        #     time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime(time.time())))
+        # print("{} save in {}".format("INFO", name))
+        roi = image[y: h + padding, x: w, :]
+        # cv.imwrite(name, roi)
+        text_area_detect(roi)
 
     # cv.imshow("finder", image)
     # cv.imshow("result", result)
