@@ -63,5 +63,6 @@ make -j7
 ## 安装
 ```
 sudo make install
+sudo ldconfig
 ```
 
