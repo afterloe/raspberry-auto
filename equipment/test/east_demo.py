@@ -2,8 +2,9 @@
 # -*- coding=utf-8 -*-
 
 import cv2 as cv
-import time
+from imutils.object_detection import non_max_suppression
 import numpy as np
+import time
 
 """
 
@@ -16,8 +17,8 @@ padding = 5
 
 def main():
     dnn = cv.dnn.readNet(model_bin)
-    # dnn.setPreferableBackend(cv.dnn.DNN_BACKEND_HALIDE)
-    # dnn.setPreferableTarget(cv.dnn.DNN_TARGET_FPGA)
+    dnn.setPreferableBackend(cv.dnn.DNN_BACKEND_CUDA)
+    dnn.setPreferableTarget(cv.dnn.DNN_TARGET_CUDA)
     image = cv.imread("./target.jpeg")
     cv.imshow("src", image)
     (h, w) = image.shape[:2]
@@ -54,16 +55,24 @@ def main():
             start_y = int(end_y - h)
             rects.append([start_x, start_y, end_x, end_y])
             confidences.append(float(scores_data[x]))
-    boxes = cv.dnn.NMSBoxes(rects, confidences, 0.5, 0.8)
+    # 最大区域抑制
+    boxes = non_max_suppression(np.array(rects), probs=confidences)
+    # boxes = cv.dnn.NMSBoxes(rects, confidences, 0.5, 0.8)  # 抑制目标， 最大目标
     result = np.zeros(image.shape[:2], dtype=image.dtype)
-    for i in boxes:
-        i = i[0]
-        start_x, start_y, end_x, end_y = rects[i]
+    # for i in boxes:
+    #     i = i[0]
+    #     start_x, start_y, end_x, end_y = rects[i]
+    #     start_x = int(start_x * r_w)
+    #     start_y = int(start_y * r_h)
+    #     end_x = int(end_x * r_w)
+    #     end_y = int(end_y * r_h)
+    #     cv.rectangle(result, (start_x, start_y), (end_x, end_y), (255, 0, 0), 2)
+    for start_x, start_y, end_x, end_y in boxes:
         start_x = int(start_x * r_w)
         start_y = int(start_y * r_h)
         end_x = int(end_x * r_w)
         end_y = int(end_y * r_h)
-        cv.rectangle(result, (start_x, start_y), (end_x, end_y), (255, 0, 0), 2)
+        cv.rectangle(image, (start_x, start_y), (end_x, end_y), (0, 255, 0), 2)
 
     kernel = cv.getStructuringElement(cv.MORPH_RECT, (5, 1))
     result = cv.morphologyEx(result, cv.MORPH_DILATE, kernel)
@@ -87,11 +96,16 @@ def main():
                 text_boxes[i] = text_boxes[j]
                 text_boxes[j] = temp
     for x, y, w, h in text_boxes:
-        text_area_detect(image[y: h + padding, x: w, :])
+        # name = "./{}.jpeg".format(
+        #     time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime(time.time())))
+        # print("{} save in {}".format("INFO", name))
+        roi = image[y: h + padding, x: w, :]
+        # cv.imwrite(name, roi)
+        text_area_detect(roi)
 
-    # cv.imshow("finder", image)
+    cv.imshow("finder", image)
     # cv.imshow("result", result)
-    # cv.waitKey(0)
+    cv.waitKey(0)
 
 
 def text_area_detect(roi):
