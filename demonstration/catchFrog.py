@@ -102,10 +102,10 @@ def findTarget(frame):
     frame = cv2.GaussianBlur(frame, (5, 5), 0)
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, hsv_min, hsv_max)
-    mask = cv2.erode(mask, None, iterations = 2)
-    mask = cv2.dilate(mask, None, iterations = 2)
+    mask = cv2.erode(mask, None, iterations=2)
+    mask = cv2.dilate(mask, None, iterations=2)
     mask = cv2.GaussianBlur(mask, (3, 3), 0)
-    res = cv2.bitwise_and(frame ,frame, mask = mask)
+    res = cv2.bitwise_and(frame, frame, mask=mask)
     cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
     if 0 >= len(cnts):
         return False, cnts
@@ -120,8 +120,7 @@ def targetTracking(cnts, p, frame=None):
         return 
     x, y, radius = int(x), int(y), int(radius)
     if None is not frame:
-        cv2.rectangle(frame, (x - radius, y - radius), (x + radius, y + radius),
-                      (0, 255, 0), 2)
+        cv2.rectangle(frame, (x - radius, y - radius), (x + radius, y + radius), (0, 255, 0), 2)
     if calculationLogic(x, y) < 50:
         return
     if x > zero_width:
@@ -138,7 +137,7 @@ def targetTracking(cnts, p, frame=None):
         print("上")
         p.yAdd()
     print("move to %d, %d" % (p.getAddr()))
-    tid = threading.Thread(target = moveSteering, args = (p.getAddr()))
+    tid = threading.Thread(target=moveSteering, args=(p.getAddr()))
     tid.setDaemon(True)
     tid.start()
 

@@ -19,7 +19,8 @@ def main():
     dnn = cv.dnn.readNet(model_bin)
     dnn.setPreferableBackend(cv.dnn.DNN_BACKEND_CUDA)
     dnn.setPreferableTarget(cv.dnn.DNN_TARGET_CUDA)
-    image = cv.imread("./target.jpeg")
+    image = cv.imread("G:\\Project\\opencv-ascs-resources\\meter_pointer_roi\\2020-03-05_22-18-30.jpeg")
+    # image = cv.imread("./target.jpeg")
     cv.imshow("src", image)
     (h, w) = image.shape[:2]
     r_h = h / float(320)
